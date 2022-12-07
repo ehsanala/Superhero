@@ -8,7 +8,7 @@ const express = require('express')
 //Added for Assignment#3
 // const exphbs = require('express-handlebars')
 // const bodyParser = require('body-parser')
-// const path = require('path')
+const path = require('path')
 
 
 // local imports
@@ -35,9 +35,26 @@ app.use(express.json({ limit: '50mb' }))
 const cors = require('cors')
 app.use(cors())
 
+const hbs = require('express-handlebars');
+// View Engine Setup
+app.engine('.hbs', hbs.engine({extname: '.hbs'}));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', '.hbs');
+
+// Set public dir
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Routers
 const heroRouter = require(__basedir + '/routers/hero')
 app.use(heroRouter)
+
+app.get('/', async (req, res) => {
+  res.render('index');
+})
+
+app.get('/search', async (req, res) => {
+  res.render('search');
+})
 
 
 
