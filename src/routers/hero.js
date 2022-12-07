@@ -46,7 +46,7 @@ router.get('/heroes', async (req, res) => {
   size = parseInt(size)
   const query = {}
   const totalData = await Hero.find().estimatedDocumentCount()
-  const data = await Hero.find(query).sort({'_id': -1}).skip((page - 1) * size).limit(size).exec()
+  const data = await Hero.find(query).sort({'name': -1}).skip((page - 1) * size).limit(size).exec()
 
 
   const pageNumber = Math.ceil(totalData / size)
@@ -55,7 +55,7 @@ router.get('/heroes', async (req, res) => {
       count: totalData,
       pagination: {
         page: page,
-        pageCount: page >= pageNumber ? null : page + 1
+        pageCount: pageNumber
       }
     }
   res.send(results)
@@ -91,7 +91,7 @@ router.post('/search/heroes/by-name', async (req, res) => {
       count: totalData,
       pagination: {
         page: page,
-        pageCount: page >= pageNumber ? null : page + 1
+        pageCount: pageNumber
       }
   }
 
@@ -144,7 +144,7 @@ router.post('/search/heroes/by-min-stats', async (req, res) => {
       count: totalData,
       pagination: {
         page: page,
-        pageCount: page >= pageNumber ? null : page + 1
+        pageCount: pageNumber
       }
   }
 
@@ -192,7 +192,7 @@ router.get('/heroes/:id/comments', async (req, res) => {
       count: totalData,
       pagination: {
         page: page,
-        pageCount: page >= pageNumber ? null : page + 1
+        pageCount:pageNumber
       }
   }
 
