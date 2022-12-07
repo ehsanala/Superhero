@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no"/>
+        <link rel="stylesheet" type="text/css" href="assets/css/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+
+        <script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> 
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&display=swap');
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <header>
+                <div class="logo">HeroPage</div>
+                <ul class="nav">
+                    <li onclick="nav('hero-list')"><a href="home">Home</a></li>
+                    <li onclick="nav('hero-search')"><a href="search">Search</a></li>
+                </ul>
+            </header>
+
+            <main id="app">
+                {{{body}}}
+            </main>
+
+        </div>
+
+        <footer>
+            <script>
+                const SERVER = 'https://itec4020-a3-superhero-tguc.onrender.com'
+            </script>
+            
+            <script>
+                let heroSearchTable = new DataTable('#hero-search-table', {
+                    // options
+                });
+            </script>
+
+            <script>
+                const Q = (q, all=false) => all? document.querySelectorAll(q) : document.querySelector(q);
+                const nav = id => {
+                    (Q('#app').childNodes).forEach(e => {
+                        if (e.nodeType == 3) return
+                        else if (e.hasAttribute('id') && e.getAttribute('id') == id) 
+                            e.setAttribute('data-active', 'true');
+                        else
+                            e.removeAttribute('data-active');
+                    });
+                }
+
+                const viewHero = id => {
+                    // Find hero by id
+                    const hero = heroList.find(e => Number(e.id) == Number(id));
+
+                    // Detail output element
+                    const field = Q('#hero-view #hero-details');
+                    field.innerHTML = '';
+
+                    // Output each hero detail
+                    for (let [key, value] of Object.entries(hero)) {
+                        if (key == 'id') continue
+
+                        field.innerHTML += key == 'image'
+                        ? `<img src="${value}"></img>`
+                        :`
+                            <section class="hero-details_wrapper">
+                                <span class="hero-details_title">${key}</span>
+                                <strong class="hero-details_value">${value}</strong>
+                            </section>
+                        `
+                    }
+
+                    nav('hero-view');
+                }
+            </script>
+        </footer>
+    </body>
+</html>

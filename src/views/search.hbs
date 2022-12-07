@@ -1,0 +1,50 @@
+<section data-active id="hero-search">
+    <div class="page-title">
+        <span class="nav" onclick="nav('hero-list')">⬅️</span>
+        <strong>Search Heroes</strong>
+    </div>
+
+    <div class="search-filter">
+        <form>
+            <div class="search-filter_wrapper">
+                <input value="" type="search" name="hero_name" placeholder="Hero name" />
+            </div>
+            
+            <div class="search-filter_wrapper">
+                <input value="" type="search" name="hero_name" placeholder="Min power stats" />
+            </div>
+
+            <div class="search-filter_wrapper">
+                <select name="hero_gender">
+                    <option value="none">Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+
+            <div class="search-filter_wrapper">
+                <button type="submit" onclick="searchHero()">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="hero-display">
+        <table id="hero-search-table" class="display">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Power stat</th>
+                    <th>Gender</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+    let heroSearchTable = new DataTable('#hero-search-table', {
+        // options
+    });
+</script>

@@ -1,0 +1,99 @@
+
+<section id="hero-list" data-active>
+    <div class="page-title">
+        <div class="logo">
+            <strong>Heroes</strong>
+        </div>
+        
+    </div>
+
+    <div class="hero-display">
+        <table id="hero-list-table" class="display">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="hero-view">
+    <div class="page-title">
+        <span class="nav" onclick="nav('hero-list')">⬅️</span>
+
+        <strong>View Hero</strong>
+    </div>
+
+    <div class="hero-display">
+        <div id="hero-details">
+
+        </div>
+    </div>
+</section>
+
+<script>
+    let heroList = [{
+        "id": 1,
+        "name":"Tiger Nixon",
+        "gender": "male"
+    }];
+    
+    let heroListTable = new DataTable('#hero-list-table', {
+            initComplete: function () {
+                const api = this.api();
+                api.$('tr').click(function () {
+                    viewHero(this.firstChild.textContent)
+                });
+            },
+        data: heroList,
+        columns: [
+            { data: 'id', title:'id'},
+            { data: 'name' },
+            { data: 'gender' },
+        ]
+    });
+
+    const getHeroes = async () => {
+        try {
+            // http://ip-api.com/json
+            const res = await fetch(`${SERVER}/heroes`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": 'application/json;utf-8'
+                }
+            });
+
+            if (!res.ok) throw('Server error');
+
+            const data = await res.json();
+
+            console.log(data)
+
+            if (!data.data.length) throw('No data from server');
+
+            heroList = data.data.map((e, i) => ({
+                id: i,
+                image: e.images.md,
+                speed: e.powerstats.speed,
+                intelligence: e.powerstats.intelligence,
+                gender: e.appearance.gender,
+                race: e.appearance.race,
+                fullName: e.biography.fullName,
+                name: e.name,
+                Occupation: e.work.occupation
+            }));
+
+
+        } catch (e) {
+            alert(`Request error: ${e}`)
+        }
+    }
+
+    getHeroes();
+
+</script>
